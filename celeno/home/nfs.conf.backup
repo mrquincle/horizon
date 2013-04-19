@@ -1,0 +1,6 @@
+# NFS server details
+NFS_SERVER_IP=10.0.0.150
+NFS_SERVER_PATH=/f/workspace/nfsroot
+
+# NFS root path on the target board
+TARGET_NFS_PATH=/mnt/nfs

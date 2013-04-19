@@ -1,0 +1,479 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# CELENO-FIX / Benson, 17-04-2011
+# Description: This file was taken as is from 6.50.0xx (SDK 3.5.2 merge)
+#
+. /sbin/config.sh
+. /sbin/eeprom_config.sh
+
+set_gmm_hw_file()
+{
+    pn=$( get_eeprom_value Board_PN )
+    hw_file=/sbin/gmm_hw_${pn}.sh
+    if [ ! -s "$hw_file" ]; then
+        echo "$0: No such file: $hw_file! Using default..."
+        hw_file=/sbin/gmm_hw_31.sh
+    fi
+
+    ln -s "$hw_file" /sbin/gmm_hw.sh
+
+    echo "Board PN${pn}: gpio hw file: $hw_file"
+}
+
+
+
+if [ "$CONFIG_EGRET_SILENT" = "y" ]; then
+	#before starting egret manager, kills al prints to screen
+	mv /dev/console /dev/console_t
+	ln -s /dev/null /dev/console
+fi
+
+mount -a
+mkdir -p /var/run
+cat /etc_ro/motd
+cp /etc_ro/profile /etc
+
+insmod ce_gpio_drv
+mknod /dev/cegpio c 206 0
+
+
+if [ "$CONFIG_CELENO_INIC_MODE" = "y" ]; then
+    load_mode=0
+else
+    load_mode=$( get_eeprom_value Load_Mode )
+fi
+
+#echo "benson::: load_mode=$load_mode"
+#flash -r 40000 -c 16
+#flash -r 40200 -c 16
+#flash -r 40350 -c 16
+#echo "benson::: end"
+
+if [ "$load_mode" -eq "0" ]; then
+    echo "Production or INIC mode - gmm will not run!"
+    cegpio timeronoff 0
+else
+    echo "Operation mode - gmm will run!"
+    cegpio timeronoff 1
+fi
+
+# inic related stuff
+if [ "$CONFIG_CELENO_INIC_MODE" = "y" ]; then
+    sleep 1
+    echo "########### rcS: INIC Mode ... ##########"
+    mkdir -p /etc/Wireless/RT2860
+    
+#    if [ -f /etc_ro/eeprom.factory.bin ];  then
+#        echo "########### rcS: Copy eeprom.factory.bin eeprom file ... ##########"
+#        cp /etc_ro/eeprom.factory.bin /etc/Wireless/RT2860
+#    else
+#        echo "########### rcS:/etc_ro/eeprom.factory.bin file not found !!! ##########"
+#    fi
+    
+    if [ -f /bin/iNICd ]; then
+        # Use eth2 temporarilly to get the rest of the configuration via iNICd
+        insmod -q raeth
+        ifconfig eth2 up
+        echo "########### rcS: Running iNICd ... ##########"
+        /bin/iNICd &
+    
+        # verify we have flash.config on fs
+        COUNTER=0
+        while [  "$COUNTER" -lt 100 ]; do
+            let COUNTER=COUNTER+1
+            if [ ! -e /etc/Wireless/RT2860/nvram.bin ]; then
+                echo "########### rcS: Wait for inic config file $COUNTER. ##########"
+                sleep 1;
+            else
+                echo "########### rcS: Got nvram.bin ... ##########"
+                break
+            fi
+        done
+
+        if [ "$COUNTER" -ge 100 ]; then
+            echo "########### rcS:  inic config file timeout !!!!! Configuration is bad. ##########"
+        fi
+
+        if [ -f /tmp/target_operation_mode ] ; then
+            BOARD_OPERATION_MODE=`cat /tmp/target_operation_mode`
+            echo "########### rcS: BOARD_OPERATION_MODE=$BOARD_OPERATION_MODE ##########"
+#            rm -f /tmp/target_operation_mode
+        else
+            echo "########### rcS: /tmp/target_operation_mode doesn't exist, using default ##########"
+            BOARD_OPERATION_MODE=operational
+        fi
+    else
+        echo "########### rcS: iNICd not found !!! ##########"
+    fi
+fi
+
+echo "nvram_daemon start"
+nvram_daemon&
+while [ ! -e /var/run/nvramd.pid ]
+do
+    sleep 1
+done
+echo "nvram_daemon finished his duty"
+
+if [ "$CONFIG_CELENO_INIC_MODE" != "y" ]; then
+    echo "########### rcS: Stand Alone Mode ... ##########"
+
+    # setup /dev/mtdpart/*
+    mtdpart-setup.sh
+
+    # JFFS2 support
+    if grep -q JFFS2 /proc/mtd; then
+        insmod zlib_deflate.ko
+        insmod zlib_inflate.ko
+        insmod jffs2.ko
+
+        mkdir /mnt/jffs
+        mtddev="`sed -n '/JFFS2/s/:.*$//p' /proc/mtd`" # e.g mtd4
+        mount -t jffs2 $mtddev /mnt/jffs > /dev/null 2> /dev/null
+
+        if [ $? -ne 0 ]; then
+            echo "warning: can't mount JFFS2, trying to format partition" > /dev/console
+            mtd_write erase $mtddev
+            mount -t jffs2 $mtddev /mnt/jffs > /dev/null 2> /dev/null
+            if [ $? -ne 0 ]; then
+                echo "warning: can't format JFFS2 partition" > /dev/console
+                rm -rf /mnt/jffs
+            fi
+        fi
+    fi
+fi
+
+ifconfig lo 127.0.0.1
+
+log_enable=`nvram_get 2860 LogEnable`
+if [ "$log_enable" == "1" ]; then
+    echo "starting logging daemon ..." > /dev/console
+    log_lang=`nvram_get 2860 LogLanguage`
+    if [ -n "$log_lang" ]; then
+        CELOG_LANGUAGE=$log_lang celogd &
+    else
+        echo "can't start logging: no LogLanguage" > /dev/console
+    fi
+fi
+
+# check last reset status and set SystemResetInfo accordingly
+reset_status_check.sh
+
+set_gmm_hw_file
+/etc/init.d/set_operation_mode.sh
+
+safeboot=no
+
+if [ "$CONFIG_CELENO_INIC_MODE" = "y" ]; then
+    if [ -f /sbin/cemgr.sh ]; then
+        echo
+        echo "##########################################################################"
+        echo "##########################################################################"
+        echo "########### rcS: eeprom check ...                              ###########"
+
+        eeprom_status=`cemgr.sh eeprom_check |grep "eeprom status:"`
+
+        if [ "$eeprom_status" == "eeprom status: corrupted" ]; then
+            echo "########### rcS: eeprom is corrupted !!!                       ###########"
+            if [ "$BOARD_OPERATION_MODE" = "production" -o "$BOARD_OPERATION_MODE" = "eeprom_repair_all" ] ; then
+                echo "########### rcS: "$BOARD_OPERATION_MODE" mode - restoring eeprom   ###########"
+                #i2ccmd eeprom write /etc/Wireless/RT2860/eeprom.factory.bin > /dev/null 2>&1
+                cemgr.sh eeprom_restore_all $BOARD_OPERATION_MODE > /dev/null
+                echo "########### rcS: booting system with wireless drivers !!!      ###########"
+            else
+                echo "########### rcS: booting system without wireless drivers !!!   ###########"
+                safeboot=yes
+            fi
+        elif [ "$eeprom_status" == "eeprom status: celeno restore" ]; then
+            echo "########### rcS: celeno eeprom restore is needed !!!           ###########"
+            if [ "$BOARD_OPERATION_MODE" = "production" -o "$BOARD_OPERATION_MODE" = "eeprom_repair_all" ] ; then
+                echo "########### rcS: "$BOARD_OPERATION_MODE" mode - restoring eeprom   ###########"
+                cemgr.sh eeprom_restore_all $BOARD_OPERATION_MODE > /dev/null
+                echo "########### rcS: booting system with wireless drivers !!!      ###########"
+            elif [ "$BOARD_OPERATION_MODE" = "eeprom_repair_celeno" ]; then
+                echo "########### rcS: "$BOARD_OPERATION_MODE" mode - restoring eeprom   ###########"
+                cemgr.sh eeprom_restore_celeno > /dev/null
+                echo "########### rcS: booting system with wireless drivers !!!      ###########"
+            else
+                echo "########### rcS: booting system without wireless drivers !!!   ###########"
+                safeboot=yes
+            fi
+        #elif [ "$eeprom_status" == "eeprom status: gpio restore" ]; then
+        #	echo "########### rcS: gpio eeprom restored - eeprom is valid !!!    ###########"
+        #	echo "########### rcS: booting system with wireless drivers !!!      ###########"
+        elif [ "$eeprom_status" == "eeprom status: valid" ]; then
+            echo "########### rcS: eeprom is valid !!!                           ###########"
+            echo "########### rcS: booting system with wireless drivers !!!      ###########"
+        else  
+            echo "########### rcS: unexpected eeprom_status ($eeprom_status)     ###########"
+                if [ "$BOARD_OPERATION_MODE" = "production" ] ; then
+                    echo "########### rcS: production mode - restoring defaults          ###########"
+                    #i2ccmd eeprom write /etc/Wireless/RT2860/eeprom.factory.bin > /dev/null 2>&1
+                    cemgr.sh eeprom_restore_all $BOARD_OPERATION_MODE
+                echo "########### rcS: booting system with wireless drivers !!!      ###########"
+            else
+                echo "########### rcS: booting system without wireless drivers !!!   ###########"
+                safeboot=yes
+            fi
+        fi
+    
+        echo "##########################################################################"
+        echo "##########################################################################"
+        echo
+    else
+        echo "########### rcS: no cemgr.sh utility available  !!!            ###########"
+        echo "########### rcS: booting system without wireless drivers !!!   ###########"
+        safeboot=yes
+    fi
+fi
+
+if [ "$safeboot" = "yes" ]; then
+    ifconfig eth2 10.0.0.2 up
+
+    # celeno Gpio driver
+    # echo "insmod ce_gpio_drv" 
+    # insmod ce_gpio_drv
+    # mknod /dev/cegpio c 206 0
+    # blink all leds forever
+    # cegpio led 0x00000001 2 -1 2000 2000 
+
+    echo "########### rcS: SAFE BOOT !!!  ###########"
+    echo "########### rcS: SAFE BOOT !!!  ###########"
+    echo "########### rcS: SAFE BOOT !!!  ###########"
+    exit 1
+else
+    if [ "$CONFIG_CELENO_INIC_MODE" = "y" ]; then
+        # remove eth2 - will be brought up again by internet.sh if needed (prevent error messages)
+        ifconfig eth2 down
+        rmmod raeth
+    fi
+fi
+
+# check if need to merge nvram with new version
+if [ "$( nvram_get 2860 IsSoftwareUpdate )" = "1" ]; then
+    echo "Restoring Defaults while updating firmware ..." > /dev/console
+    if [ -f /etc_ro/Wireless/RT3090AP/RT3090_ap_default ]; then
+        restore_defaults.sh 3090 sw_update
+    fi
+    restore_defaults.sh 2860 sw_update
+    nvram_set IsSoftwareUpdate 0
+fi
+
+if [ "$CONFIG_CELENO_INIC_MODE" != "y" ]; then
+    is_sta=`nvram_get 2860 ethConvert`
+    if [ "$is_sta" == "1" ]; then
+        WpsSsid=`nvram_get uboot WpsSsid`
+        WpsPasPhrase=`nvram_get uboot WpsPasPhrase`
+        WpsEncryptType=`nvram_get uboot WpsEncryptType`
+        WpsAuthMode=`nvram_get uboot WpsAuthMode`
+
+        if [ -n "$WpsSsid" -a -n "$WpsPasPhrase" -a -n "$WpsEncryptType" -a -n "$WpsAuthMode" ]; then
+            echo "Updating Wps"
+            nvram_set SSID1 $WpsSsid
+            nvram_set WPAPSK1 $WpsPasPhrase
+            nvram_set EncrypType $WpsEncryptType
+            nvram_set AuthMode $WpsAuthMode
+            if [ "`nvram_get RescueUniqueCredentials`" = "1" ]; then
+                nvram_set uboot "RescueGotCredentials" "2"
+            fi
+        fi
+    fi
+fi
+
+# enable ethernet driver
+#insmod /lib/modules/2.6.21/kernel/drivers/net/raeth/raeth.ko
+
+# enable watchdog
+is_wdog_enable=`nvram_get 2860 WdogEnable`
+if [ "$is_wdog_enable" == "1" ]; then
+    echo "Enabling watchdog."
+    mknod /dev/watchdog c 10 130
+    wdg.sh 0.0.0.0 eth2
+    wd_keepalive&
+else
+    echo "Watchdog is disabled."
+fi
+
+if [ "$CONFIG_CONFIG_APP_STANDALONE" = "y" ]; then
+    # start TR-069 agent
+    if [ -e /bin/tr069 ]; then
+        /sbin/tr069.sh /etc &
+    else
+        rm -f /etc_ro/tr069/*pwd* >/dev/null 2>/dev/null
+    fi
+fi
+
+#Verify that syslogd, klogd and logread are running
+killall -q -0 syslogd
+if [ $? != 0 ]; then
+    syslogd -C64 1>/dev/null 2>&1
+fi
+killall -q -0 klogd
+if [ $? != 0 ]; then
+    klogd -c4 1>/dev/null 2>&1
+fi
+killall -q -0 logread
+if [ $? != 0 ]; then
+    logread -fc &
+fi
+
+# starting gmm
+part_number=$( get_eeprom_value Board_PN )
+if [ "$CONFIG_CELENO_INIC_MODE" = "y" ]; then
+    if [ "$part_number" = "75" ] || [ "$part_number" = "77" ]; then
+            echo running gmm_inic.sh
+            mv /sbin/gmmini_inic.sh /sbin/gmm_inic.ini
+            /sbin/gmm_inic.sh &
+    else
+        echo "INICMODE: NOT running gmm.sh  !!!"
+    fi
+else
+    if [ "$load_mode" -ne "0" ]; then
+        if [ "$part_number" = "47" ] || [ "$part_number" = "49" ]; then
+            echo running gmm47.sh
+            /sbin/gmm47.sh &
+        elif [ "$part_number" != "72" ]; then
+            echo running gmm.sh  
+            /sbin/gmm.sh &
+        else
+            echo "PN72: gmm will not run"
+        fi
+    fi
+fi
+
+if [ -e /bin/goinit ]; then
+    /bin/goinit
+fi
+
+if [ "$CONFIG_CONFIG_APP_STANDALONE" = "y" ]; then
+    if [ -e /bin/goahead ]; then
+        /bin/goahead&
+    fi
+fi
+
+#start telnetd
+timeout=`nvram_get 2860 TelnetTimeout`
+if [ "x"$timeout == "x" -o "$timeout" -lt "0" ]; then
+    timeout=120
+    echo "Illegal telnet timeout: set to default (120)"
+fi
+
+cat /etc_ro/top-release > /etc_ro/telnet_msg
+telnetd -t $timeout -f /etc_ro/telnet_msg -l /bin/sh
+
+#start the tftp deamon
+#udpsvd -vE 0.0.0.0 69 tftpd /etc_ro/web/cgi-bin -c &
+
+#for syslogd
+mkdir -p /var/log
+
+#start remote logging script
+remote_logging.sh &
+
+# rescue deamon
+is_rescued_enable=`nvram_get 2860 RescueModeEnable`
+if [ "$is_rescued_enable" == "1" ]; then
+	echo "Starting Rescue deamon"
+	rescued -i br0 -n 10.0.0.3 -p sta_uImage
+fi
+if [ "`nvram_get ethConvert`" = "1" ] && [ "`nvram_get APtoSTAupdateEnable`" == "1" ]; then
+    echo "starting 'STA update through AP' service"
+    aptosta_update_server &
+fi
+
+# SIP QOS
+is_sipqos_enable=`nvram_get 2860 SipQOSEnable`
+if [ "$is_sipqos_enable" == "1" ]; then
+	/home/dscp_sip.sh
+fi
+
+# presumably, everything is going well ...
+# reset SW trial flag in u-boot
+#------------------------------------------------------------------------------
+# CELENO-FIX / Benson, 17-04-2011
+# Description: (SDK 3.5.2 merge)
+# This script was adjusted according to Celeno networking demands
+# and was heavily changed from original 3.5.2 SDK.
+#
+if [ "$CONFIG_CELENO_INIC_MODE" != "y" ]; then
+    if [ -n "`nvram_get uboot KernelTryCount`" ]; then
+        echo "resetting SW trial flag in u-boot"
+       nvram_set uboot KernelTryCount ""
+    fi
+fi
+
+# gproxy init
+is_gproxy_enable=`nvram_get 2860 IgmpProxyEn`
+if [ "$is_gproxy_enable" == "1" ]; then
+    echo "Starting gproxy"
+    gproxy &
+fi
+
+#YK CELENO_ERROR
+if [ "$CONFIG_CELENO_INIC_MODE" != "y" ]; then
+    echo "Starting ce_error"
+    ce_error
+fi
+
+#end CELENO_ERROR
+
+if [ "$CONFIG_EGRET_SILENT" = "y" ]; then
+    echo Egret Manager starting.. > /dev/console
+    #getty -l /bin/sh admin ttyS1 57600 
+    egretmgr
+    #returnning console after egretmgr exited
+    rm /dev/console
+    mv dev/con_eg /dev/console
+fi
+
+
+cetg_DUT=`nvram_get 2860 cetg_DUT`
+cetg_TG=`nvram_get 2860 cetg_TG`
+cetg_dev=`nvram_get ethConvert`
+if [ "$cetg_TG" == "1" ]; then
+    mkdir /tftproot
+    echo "celeno cetg traffic generator, killing gmm.sh, wlan drivers"
+    killall gmm.sh
+    cegpio timeronoff 1
+    #sleep 3
+    #ifconfig ra0 down
+    #sleep 3
+    #rmmod rt2860v2_ap
+    #sleep 2
+    /bin/CETG_controller >/dev/console 2>/dev/console &
+elif [ "$cetg_DUT" == "1" ]; then
+    mkdir /tftproot
+    echo "cetg DUT mode"
+    if [ $cetg_dev == "1" ]; then
+        echo station DUT
+        /sbin/cetg_sta_daemon.sh >/dev/console 2>/dev/console &
+    else
+        echo AP DUT
+        #start tftp daemon
+        udpsvd -vE 0.0.0.0 69 tftpd /tftproot -c &
+        #start cetg ap daemon
+        /sbin/CETG_AP &
+        #kill old remote logging app if exists
+        killall remote_logging.sh
+        #start cetg remote loggin app
+        echo Starting cetg remote logging script > /dev/console
+        /sbin/cetg_ap_remote_logging.sh >/dev/console 2>/dev/console &
+
+    fi
+fi
+# Start IPerf daemon (station only)
+if [ "`nvram_get ethConvert`" = "1" ] && [ -x "/bin/staperf" ]
+then
+
+    echo "starting IPerf daemon"
+    staperf 5003 &
+	
+    # remove technician tool web page from station (meant for ap only)
+    rm -f /etc_ro/web/ap/cfg_tech.asp
+fi
+
+# delete the technician page if IPerf tool is N/A
+
+if (!( [ -x "/bin/apperf" ] && [ -x "/bin/iperf" ] )); then rm -f /etc_ro/web/ap/cfg_tech.asp; fi
+
+

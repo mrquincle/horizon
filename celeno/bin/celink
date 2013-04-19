@@ -1,0 +1,84 @@
+#!/bin/sh -u
+
+### unittest start ###
+# nvram_get()
+# {
+#     echo 0
+# }
+# 
+# iwpriv()
+# {
+#     echo "iwpriv $*"
+# }
+### unittest end ###
+
+readonly MAX_ODM_DATA_SIZE=32
+readonly is_sta_mode=$( nvram_get ethConvert )
+
+if [ $# -lt 2 ]; then
+    echo "$0: usage"
+    echo "    $0 ODMDataSend ALL <data>"
+    echo "    echo <data> | $0 ODMDataSend ALL"
+    echo "    $0 ODMDataRecv AP"
+    echo ""
+    echo "    Maximum data size is $MAX_ODM_DATA_SIZE bytes"
+    exit 1
+fi
+
+readonly IFF_UP=0x0001
+if [ ! -e /sys/class/net/ra0 ] || [ $(( $( cat /sys/class/net/ra0/flags ) & IFF_UP )) -eq 0 ]; then
+    echo "$0: wireless interface is unavailable now" >&2
+    exit 1
+fi
+
+readonly command="$1"
+readonly address="$2"
+
+case "$command" in
+    "ODMDataSend")
+        if [ "$is_sta_mode" = 1 ]; then
+            echo "$0: this command is unavailable in current mode" >&2
+            exit 1
+        fi
+        if [ "$address" != "ALL" ]; then
+            echo "$0: unknown destination address" >&2
+            exit 1
+        fi
+        if [ $# -eq 3 ]; then
+            # read data from argv[]
+            readonly data="$3"
+        elif [ $# -eq 2 ]; then
+            # read data from stdin
+            readonly data=$( cat /dev/stdin )
+        else
+            echo "$0: wrong no. of arguments" >&2
+            exit 1
+        fi
+        if [ ${#data} -gt "$MAX_ODM_DATA_SIZE" ]; then
+            echo "$0: data size is too big" >&2
+            exit 1
+        fi
+        iwpriv ra0 set ODMDataToSTA="$data"
+    ;;
+
+    "ODMDataRecv")
+        if [ "$is_sta_mode" = 0 ]; then
+            echo "$0: this command is unavailable in current mode" >&2
+            exit 1
+        fi
+        if [ "$address" != "AP" ]; then
+            echo "$0: unknown source address" >&2
+            exit 1
+        fi
+        if [ $# -ne 2 ]; then
+            echo "$0: wrong no. of arguments" >&2
+            exit 1
+        fi
+        iwpriv ra0 show ODMDataFromAP | sed 's/ra0 *show://'
+    ;;
+
+    *)
+        echo "$0: unknown command \"$command\"" >&2
+        exit 1
+    ;;
+esac
