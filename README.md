@@ -1,6 +1,6 @@
 ## Horizon box "hack"
 
-In my quest to create an Android app I got into the wireless chip on the Horizon box (from UPC, or worldwide better known as Liberty). Something sophisticated such as the UPNP exploit [rapid7 blog](https://community.rapid7.com/community/metasploit/blog/2013/01/30/weekly-update) is absolutely not necessary. 
+In my quest to create an Android app I got into the wireless chip on the Horizon box (from UPC, or worldwide better known as Liberty). Something sophisticated such as the UPNP exploit [(rapid7 blog)](https://community.rapid7.com/community/metasploit/blog/2013/01/30/weekly-update) is absolutely not necessary. 
 
 ### Running programs, architecture, shell
 
@@ -50,3 +50,10 @@ There are many references to Celeno, such as in /etc_ro/rcS
     # and was heavily changed from original 3.5.2 SDK.
 
 So, this concerns the wireless chip, build by te Israelian company [Celeno](http://www.celeno.com/). An overview of the partners contributing to the UPC Horizon box can be read at [broadbandtrends.com](http://broadbandtrends.com/blog1/2012/09/09/the-future-of-television-is-on-the-horizon/). The coax implementation for example is done by Entropic. The middleware and user interface is done by [NDS](http://www.nds.com/), streaming the stuff to your devices and some additional media services is done by [KIT digital](http://www.kitd.com/) and [thePlatform](http://theplatform.com/), the apps are written by [Metrological](http://www.metrological.com/), the browser by [Empathy Lab](http://www.epam.com/empathylab.html).
+
+### Ethics
+
+This is not something that exposes your box to others. It is just between you and your Horizon box. If I would have the slightest idea that it would hurt people, I would not publish this.
+
+
+
