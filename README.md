@@ -1,4 +1,4 @@
-## Horizon box 
+## Horizon box "hack"
 
 In my quest to create an Android app I got into the wireless chip on the Horizon box (from UPC, or worldwide better known as Liberty). Something sophisticated such as the UPNP exploit [rapid7 blog](https://community.rapid7.com/community/metasploit/blog/2013/01/30/weekly-update) is absolutely not necessary. 
 
@@ -7,28 +7,28 @@ In my quest to create an Android app I got into the wireless chip on the Horizon
 There are a few programs running on the box, most noticable a so-called iNIC daemon on interface eth2.
 
     $> ps aux
-    PID USER       VSZ STAT COMMAND
-      1 admin     1912 S    init  
-      2 admin        0 SWN  [ksoftirqd/0]
-      3 admin        0 SW<  [events/0]
-      4 admin        0 SW<  [khelper]
-      5 admin        0 SW<  [kthread]
-      6 admin        0 SW<  [kswapd0]
-      7 admin        0 SW   [pdflush]
-      8 admin        0 SW   [pdflush]
-     49 admin     1160 S    nvram_daemon 
-    176 admin      788 S    wd_keepalive 
-    181 admin     1972 S    syslogd -C64 
-    185 admin     1916 S    klogd -c4 
-    188 admin     1980 S    logread -fc 
-    469 admin      784 S    sysevent-dispatch 
-    735 admin     1292 S    /bin/iNICd -i eth2 
-    940 admin     1912 R    telnetd -t 120 -f /etc_ro/telnet_msg -l /bin/sh 
-    987 admin     1920 S    /bin/sh --login 
-   1134 admin        0 SW   [RtmpCmdQTask]
-   1135 admin        0 SW   [RtmpWscTask]
-   1231 admin     1924 S    /bin/sh 
-   1362 admin     1912 R    ps aux 
+     PID USER       VSZ STAT COMMAND
+       1 admin     1912 S    init  
+       2 admin        0 SWN  [ksoftirqd/0]
+       3 admin        0 SW<  [events/0]
+       4 admin        0 SW<  [khelper]
+       5 admin        0 SW<  [kthread]
+       6 admin        0 SW<  [kswapd0]
+       7 admin        0 SW   [pdflush]
+       8 admin        0 SW   [pdflush]
+      49 admin     1160 S    nvram_daemon 
+     176 admin      788 S    wd_keepalive 
+     181 admin     1972 S    syslogd -C64 
+     185 admin     1916 S    klogd -c4 
+     188 admin     1980 S    logread -fc 
+     469 admin      784 S    sysevent-dispatch 
+     735 admin     1292 S    /bin/iNICd -i eth2 
+     940 admin     1912 R    telnetd -t 120 -f /etc_ro/telnet_msg -l /bin/sh 
+     987 admin     1920 S    /bin/sh --login 
+    1134 admin        0 SW   [RtmpCmdQTask]
+    1135 admin        0 SW   [RtmpWscTask]
+    1231 admin     1924 S    /bin/sh 
+    1362 admin     1912 R    ps aux 
 
 Architecture is MIPS.
 
