@@ -147,6 +147,8 @@ There is another interface that can be put up: ifconfig ra0 up.
     
     ERR:          0
 
+Then the Celeno specific binaries. They didn't always respond, sometimes I had to restart the box to get them responding properly, but yeah, we all know that about the Horizon box. :-)
+
     $> cecli
     ce0       Available private ioctls :
               cli              (8BE1) : set 256 char  & get   0      
