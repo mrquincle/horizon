@@ -187,8 +187,7 @@ This is not something that exposes your box to others. It is just between you an
     02:13:14 [KERNEL]       dm               Display Memory
     02:13:14 [KERNEL]       pm               Put to Memory
     
-    
-By the way "CE" is the abbrevation for Celeno.
+This general help file can subsequently help you in using the "other" applications. They are actually build up similar to busybox, that depending on how you call it has different behaviour. So, to get info on a command, type "clihelp gtw" and subsequently you can run it as for example:
     
     $> gtw -d
     # 02:16:46 [CEDRV] ------------------------------------------------
