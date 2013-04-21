@@ -187,7 +187,34 @@ This is not something that exposes your box to others. It is just between you an
     02:13:14 [KERNEL]       dm               Display Memory
     02:13:14 [KERNEL]       pm               Put to Memory
     
-This general help file can subsequently help you in using the "other" applications. They are actually build up similar to busybox, that depending on how you call it has different behaviour. So, to get info on a command, type "clihelp gtw" and subsequently you can run it as for example:
+This general help file can subsequently help you in using the "other" applications. They are actually build up similar to busybox, that depending on how you call "cecli", it has different behaviour. 
+
+    $> ls -l | grep cecli
+    lrwxrwxrwx    1 0        0               5 gpio_print -> cecli
+    lrwxrwxrwx    1 0        0               5 clihelp -> cecli
+    lrwxrwxrwx    1 0        0               5 radar -> cecli
+    lrwxrwxrwx    1 0        0               5 ba -> cecli
+    lrwxrwxrwx    1 0        0               5 plt -> cecli
+    lrwxrwxrwx    1 0        0               5 sm -> cecli
+    lrwxrwxrwx    1 0        0               5 rateadp -> cecli
+    lrwxrwxrwx    1 0        0               5 gtw -> cecli
+    lrwxrwxrwx    1 0        0               5 power -> cecli
+    lrwxrwxrwx    1 0        0               5 dm -> cecli
+    lrwxrwxrwx    1 0        0               5 version -> cecli
+    lrwxrwxrwx    1 0        0               5 sta -> cecli
+    lrwxrwxrwx    1 0        0               5 ratestd -> cecli
+    lrwxrwxrwx    1 0        0               5 chsel -> cecli
+    lrwxrwxrwx    1 0        0               5 pm -> cecli
+    lrwxrwxrwx    1 0        0               5 learn -> cecli
+    lrwxrwxrwx    1 0        0               5 eprom -> cecli
+    lrwxrwxrwx    1 0        0               5 interf -> cecli
+    lrwxrwxrwx    1 0        0               5 sdebug -> cecli
+    -rwxr-xr-x    1 0        0           33503 cecli
+    lrwxrwxrwx    1 0        0               5 sched -> cecli
+    lrwxrwxrwx    1 0        0               5 cb -> cecli
+    lrwxrwxrwx    1 0        0               5 antsel -> cecli
+
+So, to get info on a command, type "clihelp gtw" and subsequently you can run it as for example:
     
     $> gtw -d
     # 02:16:46 [CEDRV] ------------------------------------------------
