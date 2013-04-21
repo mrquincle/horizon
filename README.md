@@ -133,6 +133,8 @@ There are several interfaces defined, but there seems nothing I can connect to f
               RX bytes:73121 (71.4 KiB)  TX bytes:51536 (50.3 KiB)
               Interrupt:16 
 
+There is another interface that can be put up: ifconfig ra0 up.
+
     $> cat /proc/interrupts 
                CPU0       
       3:      96189       Surfboard  eth2
