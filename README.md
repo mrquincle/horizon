@@ -9,9 +9,9 @@ In my quest to create an Android app I got into the wireless chip on the Horizon
 
 A picture of the mediabox, though this is definitely not necessary for the hack. :-)
 
-![mediabox dissassembled](https://raw.github.com/mrquincle/horizon/master/pictures/IMG_20130420_122735.jpg)
+![mediabox dissassembled](https://raw.github.com/mrquincle/horizon/master/pictures/snapshot.jpg)
 
-You can see more pictures in [horizon/pictures](https://github.com/mrquincle/horizon/pictures), but you have to be patient because I didn't cut down on resolution, so you hopefully can read the text on the chips.
+You can see more pictures in [horizon/pictures](https://github.com/mrquincle/horizon/pictures), but you have to be patient (it takes a while to load) because I kept them hi-res, so you hopefully can read the text on the chips (forgive my crappy photographer skills).
 
 ### Running programs, architecture, shell
 
