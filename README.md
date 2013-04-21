@@ -5,6 +5,14 @@ In my quest to create an Android app I got into the wireless chip on the Horizon
     $> cat /proc/version
     Linux version 2.6.21 (test@ubuntu) (gcc version 3.4.2) #39 Sun Feb 3 07:15:23 PST 2013
 
+## Picture
+
+A picture of the mediabox, though this is definitely not necessary for the hack. :-)
+
+![mediabox dissassembled](https://raw.github.com/mrquincle/horizon/master/pictures/IMG_20130420_122735.jpg)
+
+You can see more pictures in [horizon/pictures](https://github.com/mrquincle/horizon/pictures), but you have to be patient because I didn't cut down on resolution, so you hopefully can read the text on the chips.
+
 ### Running programs, architecture, shell
 
 There are a few programs running on the box, most noticable a so-called iNIC daemon on interface eth2.
