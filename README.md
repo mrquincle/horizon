@@ -92,10 +92,14 @@ This is not something that exposes your box to others. It is just between you an
     Flash Size     : 0 MB
     JFFS Size      : 0 sectors (0 KB)
     Image Mode     : Single
+
+In the scripts in sbin you see a lot of references to "nvram_get" and "nvram_set". You can indeed use these commands such as "nvram_get 2860 WdogEnable" to check if the watchdog timer is enabled, etc. One example:
     
     $> nvram_get VlanId0Members
     "eth2 eth3 ra0 rai0"
-        
+
+There are several interfaces defined, but there seems nothing I can connect to further down into the box. Pity! Most likely the chips communicate over something else with each other.
+
     $> ifconfig
     br0       Link encap:Ethernet  HWaddr DC:71:44:D5:A4:70  
               inet addr:10.0.0.2  Bcast:10.255.255.255  Mask:255.0.0.0
