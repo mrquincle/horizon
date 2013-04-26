@@ -303,6 +303,14 @@ So, to get info on a command, type "clihelp gtw" and subsequently you can run it
     02:16:46 [CEDRV]   State READ_OTHER:    0.0%  ( 16.6%)
     02:16:46 [CEDRV] ------------------------------------------------
 
+### UART
+
+The serial port, labelled UART, on the mother board spits out data in incredible fast rate.
+
+![UART](https://raw.github.com/mrquincle/horizon/master/pictures/logic_analyser.png)
+
+What's this!?
+
 ### What's next?
 
 Again, the purpose of all this is to have people help me creating own software for the box, being able it to control it from an Android smartphone or a Raspberry PI, or other cool stuff. This falls in the same ballpark as being able to control the Emotiv Epoc, the Kinect, or the Brookstone Rover. By the way, and this is a common vulnerability in Foscam cameras on which the Brookstone is based: you can create a dump of the rover after connecting to it by ad-hoc connection through this:
