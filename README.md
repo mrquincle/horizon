@@ -104,7 +104,7 @@ This is not something that exposes your box to others. It is just between you an
     b) de gegevens die nodig zijn om de compatibiliteit tot stand te brengen nog niet eerder snel en gemakkelijk beschikbaar zijn gesteld voor de onder a) bedoelde personen; en 
     c) deze handelingen beperkt blijven tot die onderdelen van het oorspronkelijke programma die voor het tot stand brengen van compatibiliteit noodzakelijk zijn."
 
-There are two reasons for me to do this: a.) to understand the set top box, b.) to be able to create my own smartphone software to interface with it. Both are valid reasons to inspect the box. Also, note that I had to pay 50 euro's for my box. I think it's quite a lot for just taking a look inside a box. :-D
+There are two reasons for me to do this: a.) to understand the set top box, b.) to be able to create my own smartphone software to interface with it. Both are valid reasons to inspect the box. Also, note that I had to pay 50 euro's for my box. I think it's quite a lot for just taking a look inside a box. :-D Also, note that I did not put source code online. I only put binaries (which you will need to reverse engineer yourself if you want to, and shell scripts online). If your most valuable business logic resides in shell scripts, there is something wrong with your company, so I cannot imagine that would upset anyone. :-)
 
 ### More details
 
