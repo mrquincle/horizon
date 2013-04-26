@@ -305,7 +305,7 @@ So, to get info on a command, type "clihelp gtw" and subsequently you can run it
 
 ### UART
 
-The serial port, labelled UART, on the mother board spits out data in incredible fast rate.
+The serial port, labelled UART, on the mother board spits out data in incredible fast rate. The thing I use (the Saleae) cannot keep up on 10 MHz. I am only used to slow robots apparently, because that's not something I've seen before on a UART.
 
 ![UART](https://raw.github.com/mrquincle/horizon/master/pictures/logic_analyser.png)
 
