@@ -46,7 +46,31 @@ Architecture is MIPS.
     $> file bin/iNICd 
     bin/iNICd: ELF 32-bit LSB executable, MIPS, MIPS-II version 1 (SYSV), dynamically linked (uses shared libs), corrupted section header size
 
-Shell is BusyBox v1.12.1 (2013-01-27 02:03:28 PST) built-in shell (ash)
+    $> cat cpuinfo 
+    system type             : Ralink SoC
+    processor               : 0
+    cpu model               : MIPS 74K V4.12
+    BogoMIPS                : 249.34
+    wait instruction        : yes
+    microsecond timers      : yes
+    tlb_entries             : 32
+    extra interrupt vector  : yes
+    hardware watchpoint     : yes
+    ASEs implemented        : mips16 dsp
+    VCED exceptions         : not available
+    VCEI exceptions         : not available
+
+Shell is ash, and it uses busybox.
+
+    $> busybox
+    BusyBox v1.12.1 (2013-01-27 02:03:28 PST) multi-call binary
+    Copyright (C) 1998-2008 Erik Andersen, Rob Landley, Denys Vlasenko
+    and others. Licensed under GPLv2.
+    Currently defined functions:
+        [, [[, arp, ash, awk, cat, chmod, cp, cut, date, dd, diff, dmesg, echo, env, expr, find, free, ftpput, grep, gzip, halt, head, hexdump,
+        hostname, ifconfig, init, init, insmod, kill, killall, klogd, less, ln, logger, logread, ls, lsmod, mdev, mkdir, mknod, mount, mv, od,
+        ping, poweroff, ps, pwd, reboot, rm, rmmod, route, sed, sh, sleep, syslogd, tail, tar, telnetd, test, tftp, tftpd, top, touch, tr, udhcpc,
+        udpsvd, vconfig, vi
 
     $> cat etc/fstab 
     none            /proc           proc    defaults 0 0
@@ -71,6 +95,12 @@ The shorthand "CE" in the code stands of course for Celeno. Shorthand iNIC stand
 This is not something that exposes your box to others. It is just between you and your Horizon box. If I would have the slightest idea that it would hurt people, I would not publish this.
 
 ### More details
+
+Celeno has a nice interface on its chip:
+
+![Celeno GUI](https://raw.github.com/mrquincle/horizon/master/pictures/celeno.png)
+
+All commands are accessible on the command-line too of course.
 
     $> cemgr.sh eeprom_show
     
@@ -158,7 +188,7 @@ Then the Celeno specific binaries. They didn't always respond, sometimes I had t
               version          (8BE5) : set   0       & get 2047 char 
 
     $> clihelp
-    # 02:13:14 [KERNEL] 
+    02:13:14 [KERNEL] 
     02:13:14 [KERNEL] General:        
     02:13:14 [KERNEL]       echo             Print string to local terminal
     02:13:14 [KERNEL]       eprom            Eprom print.
@@ -225,7 +255,7 @@ This general help file can subsequently help you in using the "other" applicatio
 So, to get info on a command, type "clihelp gtw" and subsequently you can run it as for example:
     
     $> gtw -d
-    # 02:16:46 [CEDRV] ------------------------------------------------
+    02:16:46 [CEDRV] ------------------------------------------------
     02:16:46 [CEDRV] Gateway DB:
     02:16:46 [CEDRV] GtwIntervalInTicks       = 2
     02:16:46 [CEDRV] u32CbLimitMng            = 5
