@@ -98,10 +98,13 @@ This is not something that exposes your box to others. It is just between you an
     
     Artikel 5.3 "De rechtmatige gebruiker van een kopie van een programma is gemachtigd om zonder toestemming van de rechthebbende de werking van het programma te observeren, te bestuderen en uit te testen, ten einde vast te stellen welke ideeën en beginselen aan een element van het programma ten grondslag liggen, indien hij dit doet bij het rechtmatig laden of in beeld brengen, de uitvoering, transmissie of opslag van het programma."
 
-    Artikel 6 Decompilatie
-    1. Er is geen toestemming van de rechthebbende vereist indien de reproduktie van de code en de vertaling van de codevorm in de zin van artikel 4, onder a) en b), onmisbaar zijn om de informatie te verkrijgen die nodig is om de compatibiliteit van een onafhankelijk gecreëerd computerprogramma met andere programma's tot stand te brengen, op voorwaarde dat: a) deze handelingen worden verricht door de licentiehouder of door een ander die het recht heeft om een kopie van het programma te gebruiken, of voor hun rekening door een daartoe gemachtigde persoon; b) de gegevens die nodig zijn om de compatibiliteit tot stand te brengen nog niet eerder snel en gemakkelijk beschikbaar zijn gesteld voor de onder a) bedoelde personen; en c) deze handelingen beperkt blijven tot die onderdelen van het oorspronkelijke programma die voor het tot stand brengen van compatibiliteit noodzakelijk zijn.
+    Artikel 6 "Decompilatie
+    1. Er is geen toestemming van de rechthebbende vereist indien de reproduktie van de code en de vertaling van de codevorm in de zin van artikel 4, onder a) en b), onmisbaar zijn om de informatie te verkrijgen die nodig is om de compatibiliteit van een onafhankelijk gecreëerd computerprogramma met andere programma's tot stand te brengen, op voorwaarde dat: 
+    a) deze handelingen worden verricht door de licentiehouder of door een ander die het recht heeft om een kopie van het programma te gebruiken, of voor hun rekening door een daartoe gemachtigde persoon; 
+    b) de gegevens die nodig zijn om de compatibiliteit tot stand te brengen nog niet eerder snel en gemakkelijk beschikbaar zijn gesteld voor de onder a) bedoelde personen; en 
+    c) deze handelingen beperkt blijven tot die onderdelen van het oorspronkelijke programma die voor het tot stand brengen van compatibiliteit noodzakelijk zijn."
 
-There are two reasons for me to do this: a.) to understand the set top box, b.) to be able to create my own smartphone software to interface with it. Both are valid reasons to inspect the box.
+There are two reasons for me to do this: a.) to understand the set top box, b.) to be able to create my own smartphone software to interface with it. Both are valid reasons to inspect the box. Also, note that I had to pay 50 euro's for my box. I think it's quite a lot for just taking a look inside a box. :-D
 
 ### More details
 
