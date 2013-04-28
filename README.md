@@ -36,13 +36,14 @@ The open-source code that is used for the SMT-G4700 (but which is not developed 
 * Conditional access is implemented by Nagravision subsidiary of the (Swiss) Kudelski Group.
 * The middleware and user interface is done by (Israelian) [NDS](http://www.nds.com/). The NDS MediaHighway middleware is a competitor to OpenTV (the sister company of Nagravision). The NDS interface is called [NDS Snowflake](http://nds-snowflake.com). It is sometimes said to be Flash-based, but might very well be HTML5. Remote management is done through [Jungo Panorama](http://www.jungo.com/products/panorama-the-connected-home-manager/). NDS has been acquired by Cisco. The [NDS EPG](http://ndsuk.com/solutions/epg_framework.php) is incredibly like XBMC. And yes, looking at the Samsung release center, there is a "diff_ssl" file with a diff between "xbmc-9.11\_original" and "ssl\_rachid/XBMC\_WP1385".
 * Streaming the stuff to your devices and some additional media services is done by [KIT digital](http://www.kitd.com/) based in New York.
-* They worked together with [thePlatform](http://theplatform.com/) based in Seattle.
+* They worked together with [thePlatform](http://theplatform.com/) based in Seattle. [thePlatform MPX](http://theplatform.com/products/product_detail/type/mpx_dev_kit/) has an "open" API for a select set of developers I suppose.
 * The widgets framework are written by [Metrological](http://www.metrological.com/) (Rotterdam, The Netherlands) and is called Yuixx. It has widgets from for example hardware.info and 5minuten.tv. [Yuixx](http://www.yuixx.com/) seems down.
-* The horizon.tv part is written by [Empathy Lab](http://www.epam.com/empathylab/work/case-study/liberty-global.html), requires WideVine for DRM.
-* The iOS applications are implemented by [Intellicore Services](http://www.intellicore.net/about-us/) and their [old website](https://www.intellicore.net/). Frédéric Blanc led a team of 12 people to implement the "second screen" or the "companion device" (see [iTunes](https://itunes.apple.com/nl/app/horizon-tv-remote/id532085851?l=en&mt=8)).
+* The horizon.tv part is written by [Empathy Lab](http://www.epam.com/empathylab/work/case-study/liberty-global.html) (Pennsylvania), builds on Adobe CQ5, and has WideVine for DRM. It is "integrated" with thePlatform MXP and KIT digital SOA, but it is not clear to me who did what.
+* Some of the iOS applications are implemented by [Intellicore Services](http://www.intellicore.net/about-us/) (France) and their [old website](https://www.intellicore.net/). Frédéric Blanc led a team of 12 people to implement the "second screen" or the "companion device" (see [iTunes](https://itunes.apple.com/nl/app/horizon-tv-remote/id532085851?l=en&mt=8)).
 
 [1] [broadbandtrends.com](http://broadbandtrends.com/blog1/2012/09/09/the-future-of-television-is-on-the-horizon/)
 [2] [emerce.nl](http://www.emerce.nl/nieuws/nieuwe-horizonsettopbox-upc-heeft-app-store)
+[3] [intellicore.net](http://www.intellicore.net/libertyglobal2ndscreen/)
 
 ### NDS
 
@@ -51,17 +52,21 @@ There are some online sources:
 * [openmha](http://compliance.nds.com/openmha/) has directories referring to Zon (NDS build stuff for them fore UPC), references to snowflake, stuff on Android development, and many different drafts for app stores.
 * [NDS Service Delivery Platform](https://developer.sdp.nds.com/) for interfacing to companion devices to 3rd party developers
 
-The last platform is quite promising, but this possibility has not communicated by UPC at all.
+The last platform is quite promising, but this possibility has not communicated by UPC at all. It is probably not meant to be really used by thousands of developers. Somehow "protecting" the brand. This is why these set-top boxes will loose in the end to a complete TV over IP experience. Cisco seems to have a broader version than NDS that they bought up. NDS vision is to have an "InfiniteTV Exchange", a business-to-business content marketplace, not realizing that content is provided by people for people and TV should just be a medium and not try to prevent others from adding their content too.
 
 ## Shortcuts
 
-* EPG: Electronic Programming Guide
+* [EPG](http://en.wikipedia.org/wiki/Electronic_program_guide): Electronic Program Guide, also IPG: Interactive Program Guide
+* [OTT](http://en.wikipedia.org/wiki/Over-the-top_content): Over-The-Top content
+* [DRM](http://en.wikipedia.org/wiki/Digital_rights_management): Digital Rights Management
 
 ## Ethics
 
 This is not something that exposes your box to others. It is just between you and your Horizon box. If I would have the slightest idea that it would hurt people, I would not publish this. Moreover, this is allowed in Holland (see the [iusmentis.com blog](http://blog.iusmentis.com/2008/02/07/de-legaliteit-van-reverse-engineeren-hardware-en-drivers/)) depending on the reason. 
 
 There are two reasons for me to do this: a.) to understand the set top box, b.) to be able to create my own smartphone software to interface with it. Both are valid reasons to inspect the box. Also, note that I had to pay 50 euros for my box. I think it's quite a lot for just taking a look inside a box. :-D Also, note that I did not put source code online. I only put binaries (which you will need to reverse engineer yourself if you want to, and shell scripts online). If your most valuable business logic resides in shell scripts, there is something wrong with your company, so I cannot imagine that this would upset anyone. :-)
+
+Also, maybe different from others, I do not mind DRM, the right to protect content so people need to pay for copying it for example. Personally I do like Spotify for example which does not give me any ownership rights. I will not publish anything that makes it possible to reverse engineer the encryption of the horizon box media content. Broadcast companies should be able to get money for their services, although I think they can earn more by enabling the content of other's. Apple gets 30% for every app!
 
 ## What's next?
 
