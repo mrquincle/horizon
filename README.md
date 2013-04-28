@@ -29,18 +29,33 @@ There is a Samsung console port. Apparently they are used more often on Samsung 
 
 ## Consortium
 
-* Wi-Fi is done by the Israelian company [Celeno](http://www.celeno.com/). Information can be found in the folder [Celeno](https://github.com/mrquincle/horizon/pictures).
-* MoCA (the coax implementation) is done by Entropic. 
-* Conditional access is implemented by Nagravision.
-* The middleware and user interface is done by [NDS](http://www.nds.com/). The NDS MediaHighway middleware is a competitor to OpenTV (the sister company of Nagravision). The NDS interface is called NDS Snowflake. It is sometimes said to be Flash-based, but might very well be HTML5. Remote management is done through [Jungo Panorama](http://www.jungo.com/products/panorama-the-connected-home-manager/). NDS has been acquired by Cisco. 
-* Streaming the stuff to your devices and some additional media services is done by [KIT digital](http://www.kitd.com/) and [thePlatform](http://theplatform.com/)
-* The widgets framework are written by [Metrological](http://www.metrological.com/) and is called 
-* The browser is written by [Empathy Lab](http://www.epam.com/empathylab.html) and seems WebKIT based.
-* The iOS applications are implemented by Intellicore Services.
+The open-source code that is used for the SMT-G4700 (but which is not developed by the consortium partners) can be found on the [Open Source Release Center](http://opensource.samsung.com/). 
 
+* Wi-Fi is done by the (Israelian) company [Celeno](http://www.celeno.com/). Information can be found in the folder [Celeno](https://github.com/mrquincle/horizon/pictures).
+* MoCA (the coax implementation) is done by (American) Entropic. 
+* Conditional access is implemented by Nagravision subsidiary of the (Swiss) Kudelski Group.
+* The middleware and user interface is done by (Israelian) [NDS](http://www.nds.com/). The NDS MediaHighway middleware is a competitor to OpenTV (the sister company of Nagravision). The NDS interface is called [NDS Snowflake](http://nds-snowflake.com). It is sometimes said to be Flash-based, but might very well be HTML5. Remote management is done through [Jungo Panorama](http://www.jungo.com/products/panorama-the-connected-home-manager/). NDS has been acquired by Cisco. The [NDS EPG](http://ndsuk.com/solutions/epg_framework.php) is incredibly like XBMC. And yes, looking at the Samsung release center, there is a "diff_ssl" file with a diff between "xbmc-9.11\_original" and "ssl\_rachid/XBMC\_WP1385".
+* Streaming the stuff to your devices and some additional media services is done by [KIT digital](http://www.kitd.com/) based in New York.
+* They worked together with [thePlatform](http://theplatform.com/) based in Seattle.
+* The widgets framework are written by [Metrological](http://www.metrological.com/) (Rotterdam, The Netherlands) and is called Yuixx. It has widgets from for example hardware.info and 5minuten.tv. [Yuixx](http://www.yuixx.com/) seems down.
+* The horizon.tv part is written by [Empathy Lab](http://www.epam.com/empathylab/work/case-study/liberty-global.html), requires WideVine for DRM.
+* The iOS applications are implemented by [Intellicore Services](http://www.intellicore.net/about-us/) and their [old website](https://www.intellicore.net/). Frédéric Blanc led a team of 12 people to implement the "second screen" or the "companion device" (see [iTunes](https://itunes.apple.com/nl/app/horizon-tv-remote/id532085851?l=en&mt=8)).
 
 [1] [broadbandtrends.com](http://broadbandtrends.com/blog1/2012/09/09/the-future-of-television-is-on-the-horizon/)
+[2] [emerce.nl](http://www.emerce.nl/nieuws/nieuwe-horizonsettopbox-upc-heeft-app-store)
 
+### NDS
+
+There are some online sources:
+
+* [openmha](http://compliance.nds.com/openmha/) has directories referring to Zon (NDS build stuff for them fore UPC), references to snowflake, stuff on Android development, and many different drafts for app stores.
+* [NDS Service Delivery Platform](https://developer.sdp.nds.com/) for interfacing to companion devices to 3rd party developers
+
+The last platform is quite promising, but this possibility has not communicated by UPC at all.
+
+## Shortcuts
+
+* EPG: Electronic Programming Guide
 
 ## Ethics
 
