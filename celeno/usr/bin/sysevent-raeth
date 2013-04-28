@@ -1,8 +1,0 @@
-#!/bin/sh
-# call media_change.sh only for AP mode on LinkUp event
-if [ "$1" = 'status' ] && [ "$3" = 'LinkUp' ] ; then
-    # check for sta mode
-    retval=`lsmod | grep rt2860v2_sta`
-    [ -z "$retval" ] && media_change.sh linkup
-fi
-
