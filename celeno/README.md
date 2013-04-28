@@ -1,36 +1,75 @@
 # Celeno 
 
-Celeno has a nice interface on its chip:
+## Running programs, architecture, shell
 
-![Celeno GUI](https://raw.github.com/mrquincle/horizon/master/pictures/celeno.png)
+There are a few programs running on the box, most noticable a so-called iNIC daemon on interface eth2.
 
-All commands are accessible on the command-line too of course.
+    $> ps aux
+     PID USER       VSZ STAT COMMAND
+       1 admin     1912 S    init  
+       2 admin        0 SWN  [ksoftirqd/0]
+       3 admin        0 SW<  [events/0]
+       4 admin        0 SW<  [khelper]
+       5 admin        0 SW<  [kthread]
+       6 admin        0 SW<  [kswapd0]
+       7 admin        0 SW   [pdflush]
+       8 admin        0 SW   [pdflush]
+      49 admin     1160 S    nvram_daemon 
+     176 admin      788 S    wd_keepalive 
+     181 admin     1972 S    syslogd -C64 
+     185 admin     1916 S    klogd -c4 
+     188 admin     1980 S    logread -fc 
+     469 admin      784 S    sysevent-dispatch 
+     735 admin     1292 S    /bin/iNICd -i eth2 
+     940 admin     1912 R    telnetd -t 120 -f /etc_ro/telnet_msg -l /bin/sh 
+     987 admin     1920 S    /bin/sh --login 
+    1134 admin        0 SW   [RtmpCmdQTask]
+    1135 admin        0 SW   [RtmpWscTask]
+    1231 admin     1924 S    /bin/sh 
+    1362 admin     1912 R    ps aux 
 
-    $> cemgr.sh eeprom_show
-    
-    EEPROM Magic   : 0xCECE
-    EEPROM Version : 4
-    Board PN       : 59
-    Board Revision : 0
-    Load Mode      : 1 - Operational
-    Serial Number  : Not Set
-    Wireless PIN   : Not Set
-    Active Ants    : 0x01
-    Max BSSID Num  : 0x04, 0x04 (5G, 2.4G)
-    Eth Phy1 Addr  : 255
-    Eth Phy1 Mode  : 0xB1 - interface=rgmii speed=1G duplex=full pause=none
-    Eth Phy2 Addr  : 255
-    Eth Phy2 Mode  : 0xFF - interface=N/A speed=N/A duplex=N/A pause=N/A
-    Eth Phy Master : 1 - PHY1
-    PHY1 MDIO conf : 0x05 (using default)
-    Flash Size     : 0 MB
-    JFFS Size      : 0 sectors (0 KB)
-    Image Mode     : Single
+Architecture is MIPS.
 
-In the scripts in sbin you see a lot of references to "nvram_get" and "nvram_set". You can indeed use these commands such as "nvram_get 2860 WdogEnable" to check if the watchdog timer is enabled, etc. One example:
-    
-    $> nvram_get VlanId0Members
-    "eth2 eth3 ra0 rai0"
+    $> file bin/iNICd 
+    bin/iNICd: ELF 32-bit LSB executable, MIPS, MIPS-II version 1 (SYSV), dynamically linked (uses shared libs), corrupted section header size
+
+    $> cat cpuinfo 
+    system type             : Ralink SoC
+    processor               : 0
+    cpu model               : MIPS 74K V4.12
+    BogoMIPS                : 249.34
+    wait instruction        : yes
+    microsecond timers      : yes
+    tlb_entries             : 32
+    extra interrupt vector  : yes
+    hardware watchpoint     : yes
+    ASEs implemented        : mips16 dsp
+    VCED exceptions         : not available
+    VCEI exceptions         : not available
+
+Shell is ash, and it uses busybox.
+
+    $> busybox
+    BusyBox v1.12.1 (2013-01-27 02:03:28 PST) multi-call binary
+    Copyright (C) 1998-2008 Erik Andersen, Rob Landley, Denys Vlasenko
+    and others. Licensed under GPLv2.
+    Currently defined functions:
+        [, [[, arp, ash, awk, cat, chmod, cp, cut, date, dd, diff, dmesg, echo, env, expr, find, free, ftpput, grep, gzip, halt, head, hexdump,
+        hostname, ifconfig, init, init, insmod, kill, killall, klogd, less, ln, logger, logread, ls, lsmod, mdev, mkdir, mknod, mount, mv, od,
+        ping, poweroff, ps, pwd, reboot, rm, rmmod, route, sed, sh, sleep, syslogd, tail, tar, telnetd, test, tftp, tftpd, top, touch, tr, udhcpc,
+        udpsvd, vconfig, vi
+
+    $> cat etc/fstab 
+    none            /proc           proc    defaults 0 0
+    none            /sys            sysfs   defaults 0 0
+    none            /dev/pts        devpts  defaults 0 0
+
+There are many references to Celeno, such as in /etc_ro/rcS
+
+    # CELENO-FIX / Benson, 17-04-2011
+    # Description: (SDK 3.5.2 merge)
+    # This script was adjusted according to Celeno networking demands
+    # and was heavily changed from original 3.5.2 SDK.
 
 There are several interfaces defined, but there seems nothing I can connect to further down into the box. Pity! Most likely the chips communicate over something else with each other.
 
@@ -80,6 +119,41 @@ There is another interface that can be put up: ifconfig ra0 up.
      33:          0       Surfboard  rt2880_timer0
     
     ERR:          0
+
+## Interface
+Celeno has a nice interface on its chip:
+
+![Celeno GUI](https://raw.github.com/mrquincle/horizon/master/pictures/celeno.png)
+
+## Command-line
+
+All commands are accessible on the command-line too of course.
+
+    $> cemgr.sh eeprom_show
+    
+    EEPROM Magic   : 0xCECE
+    EEPROM Version : 4
+    Board PN       : 59
+    Board Revision : 0
+    Load Mode      : 1 - Operational
+    Serial Number  : Not Set
+    Wireless PIN   : Not Set
+    Active Ants    : 0x01
+    Max BSSID Num  : 0x04, 0x04 (5G, 2.4G)
+    Eth Phy1 Addr  : 255
+    Eth Phy1 Mode  : 0xB1 - interface=rgmii speed=1G duplex=full pause=none
+    Eth Phy2 Addr  : 255
+    Eth Phy2 Mode  : 0xFF - interface=N/A speed=N/A duplex=N/A pause=N/A
+    Eth Phy Master : 1 - PHY1
+    PHY1 MDIO conf : 0x05 (using default)
+    Flash Size     : 0 MB
+    JFFS Size      : 0 sectors (0 KB)
+    Image Mode     : Single
+
+In the scripts in sbin you see a lot of references to "nvram_get" and "nvram_set". You can indeed use these commands such as "nvram_get 2860 WdogEnable" to check if the watchdog timer is enabled, etc. One example:
+    
+    $> nvram_get VlanId0Members
+    "eth2 eth3 ra0 rai0"
 
 Then the Celeno specific binaries. They didn't always respond, sometimes I had to restart the box to get them responding properly, but yeah, we all know that about the Horizon box. :-)
 
@@ -206,4 +280,8 @@ So, to get info on a command, type "clihelp gtw" and subsequently you can run it
     02:16:46 [CEDRV]   State READ_UCAST:    0.0%  ( 16.6%)
     02:16:46 [CEDRV]   State READ_OTHER:    0.0%  ( 16.6%)
     02:16:46 [CEDRV] ------------------------------------------------
+
+## Shorthands
+
+The shorthand "CE" stands for Celeno. Shorthand iNIC stands for a Ralink chip "Intelligent Network Interface Card".
 
