@@ -70,7 +70,12 @@ Also, maybe different from others, I do not mind DRM, the right to protect conte
 
 ## What's next?
 
-Again, the purpose of all this is to have people help me creating own software for the box, being able it to control it from an Android smartphone or a Raspberry PI, or other cool stuff. This falls in the same ballpark as being able to control the Emotiv Epoc, the Kinect, the Brookstone Rover, rooting your iPhone, or Android phone.
+Again, the purpose of all this is to have people help me creating own software for the box, being able it to control it from an Android smartphone or a Raspberry PI, or other cool stuff. This falls in the same ballpark as being able to control the Emotiv Epoc, the Kinect, the Brookstone Rover, rooting your iPhone, or Android phone. Applications:
+
+* Have your own applications navigating through the program guide
+* Integrate with home automation software, the volume of the television goes up when your husband starts vaccuum cleaning
+* Use the Horizon box for Bitcoin mining
+* Make browsing on your TV a "normal" experience just as on your laptop or tablet
 
 ## Help
 
