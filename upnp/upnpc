@@ -1,0 +1,17 @@
+$> upnpc -l
+upnpc : miniupnpc library test client. (c) 2006-2011 Thomas Bernard
+Go to http://miniupnp.free.fr/ or http://miniupnp.tuxfamily.org/
+for more information.
+List of UPNP devices found on the network :
+ desc: http://10.0.0.38:49152/gatedesc.xml
+ st: urn:schemas-upnp-org:device:InternetGatewayDevice:1
+
+Found valid IGD : http://10.0.0.38:49152/upnp/control/WANIPConn1
+Local LAN ip address : 10.0.0.30
+Connection Type : IP_Routed
+Status : Connected, uptime=4446s, LastConnectionError : ERROR_NONE
+  Time started : Sun Apr 28 15:38:03 2013
+MaxBitRateDown : 400000000 bps (400.0 Mbps)   MaxBitRateUp 120000000 bps (120.0 Mbps)
+ExternalIPAddress = 213.93.188.125
+GetGenericPortMappingEntry() returned 713 (SpecifiedArrayIndexInvalid)
+

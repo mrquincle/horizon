@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<device>
+		<deviceType>urn:schemas-upnp-org:device:InternetGatewayDevice:1</deviceType>
+		<presentationURL>http://10.0.0.38</presentationURL>
+		<friendlyName>UPC Video Gateway</friendlyName>
+		<manufacturer>SAMSUNG ELECTRONICS Co., Ltd.</manufacturer>
+		<manufacturerURL>http://www.samsung.com/sec/</manufacturerURL>
+		<modelDescription>UPC Video Gateway</modelDescription>
+		<modelName>SMT-G7400</modelName>
+		<modelNumber>0068</modelNumber>
+		<serialNumber>none</serialNumber>
+		<UDN>uuid:11111111-1111-1111-1111-111111111111</UDN>
+		<serviceList>
+			<service>
+				<serviceType>urn:schemas-dummy-com:service:Dummy:1</serviceType>
+				<serviceId>urn:dummy-com:serviceId:dummy1</serviceId>
+				<controlURL>/dummy</controlURL>
+				<eventSubURL>/dummy</eventSubURL>
+				<SCPDURL>/dummy.xml</SCPDURL>
+			</service>
+		</serviceList>
+		<deviceList>
+			<device>
+				<deviceType>urn:schemas-upnp-org:device:WANDevice:1</deviceType>
+				<presentationURL>http://10.0.0.38</presentationURL>
+				<friendlyName>WANDevice</friendlyName>
+				<manufacturer>SAMSUNG ELECTRONICS Co., Ltd.</manufacturer>
+				<manufacturerURL>http://www.samsung.com/sec/</manufacturerURL>
+				<modelDescription>WAN Device on UPC VGW</modelDescription>
+				<modelName>SMT-G7400</modelName>
+				<modelNumber>0068</modelNumber>
+				<serialNumber>none</serialNumber>
+				<UDN>uuid:11111111-1111-1111-1111-111111111111</UDN>
+				<UPC>UPC VGW</UPC>
+				<serviceList>
+					<service>
+						<serviceType>urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</serviceType>
+						<serviceId>urn:upnp-org:serviceId:WANCommonIFC1</serviceId>
+						<controlURL>/upnp/control/WANCommonIFC1</controlURL>
+						<eventSubURL>/upnp/control/WANCommonIFC1</eventSubURL>
+						<SCPDURL>/gateicfgSCPD.xml</SCPDURL>
+					</service>
+				</serviceList>
+				<deviceList>
+					<device>
+						<deviceType>urn:schemas-upnp-org:device:WANConnectionDevice:1</deviceType>
+						<presentationURL>http://10.0.0.38</presentationURL>
+						<friendlyName>WANConnectionDevice</friendlyName>
+						<manufacturer>SAMSUNG ELECTRONICS Co., Ltd.</manufacturer>
+						<manufacturerURL>http://www.samsung.com/sec/</manufacturerURL>
+						<modelDescription>WanConnectionDevice on UPC VGW</modelDescription>
+						<modelName>SMT-G7400</modelName>
+						<modelNumber>0068</modelNumber>
+						<serialNumber>none</serialNumber>
+						<UDN>uuid:11111111-1111-1111-1111-111111111111</UDN>
+						<UPC>UPC VGW</UPC>
+						<serviceList>
+							<service>
+								<serviceType>urn:schemas-upnp-org:service:WANIPConnection:1</serviceType>
+								<serviceId>urn:upnp-org:serviceId:WANIPConn1</serviceId>
+								<controlURL>/upnp/control/WANIPConn1</controlURL>
+								<eventSubURL>/upnp/control/WANIPConn1</eventSubURL>
+								<SCPDURL>/gateconnSCPD.xml</SCPDURL>
+							</service>
+						</serviceList>
+					</device>
+				</deviceList>
+			</device>
+		</deviceList>
+	</device>
+</root>
