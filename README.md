@@ -52,7 +52,7 @@ There are some online sources:
 * [openmha](http://compliance.nds.com/openmha/) has directories referring to Zon (NDS build stuff for them fore UPC), references to snowflake, stuff on Android development, and many different drafts for app stores.
 * [NDS Service Delivery Platform](https://developer.sdp.nds.com/) for interfacing to companion devices to 3rd party developers
 
-The last platform is quite promising, but this possibility has not communicated by UPC at all. It is probably not meant to be really used by thousands of developers. Somehow "protecting" the brand. This is why these set-top boxes will loose in the end to a complete TV over IP experience. Cisco seems to have a broader version than NDS that they bought up. NDS vision is to have an "InfiniteTV Exchange", a business-to-business content marketplace, not realizing that content is provided by people for people and TV should just be a medium and not try to prevent others from adding their content too.
+The last platform is quite promising, but this possibility has not communicated by UPC at all. It is probably not meant to be really used by thousands of developers. Somehow "protecting" the brand. This is why these set-top boxes will loose in the end to a complete TV over IP experience. NDSs vision is to have an "InfiniteTV Exchange", a business-to-business content marketplace, not realizing that content is provided by people for people and TV should just be a medium and not try to prevent others from adding their content too. But who knows!? Things change!
 
 ## Shortcuts
 
