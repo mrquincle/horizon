@@ -160,10 +160,12 @@ if [[ "$field" == "dnsserver" ]]; then
 # Accept: application/json, text/javascript
 # Origin: http://100.10.100.1
 # X-Requested-With
+	startLocalAdd="100.10.100.11\ntest"
+	startLocalAdd="100.10.100.11"
 	curl -v --header "$header1" --header "$header2" --header "$header3" --cookie $cookie \
 		--data "page=basic" --data "token_csrf=$token" \
 		--data "ipAdd=100.10.100.1" --data "subnet=255.255.255.0" --data "enable=enabled" \
-		--data "startLocalAdd=100.10.100.11" --data "dhcpPoolSize=100" --data "dhcpLeaseTime=86400" \
+		--data "startLocalAdd=$startLocalAdd" --data "dhcpPoolSize=100" --data "dhcpLeaseTime=86400" \
 		--data "dns1=8.8.8.8" --data "dns2=8.8.4.4" --data "domainname_lan=net" --data "action=setLAN" $mediabox_url/sendResult.cgi?section=lan
 	echo
 fi
